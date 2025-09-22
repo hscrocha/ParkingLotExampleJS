@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 
 export default function Navbar(){
     return (
-<nav class="navbar navbar-expand-sm bg-dark navbar-dark"> 
+<nav class="navbar navbar-expand-sm bg-dark" data-bs-theme="dark"> 
     <div class="container-fluid">
         <ul class="navbar-nav">
         <li class="nav-item">
