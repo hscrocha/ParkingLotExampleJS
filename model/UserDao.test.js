@@ -67,3 +67,12 @@ test('Login user', async function(){
     expect(logged._id).toEqual(created._id);
     expect(logged.login).toEqual(created.login);
 });
+
+test('Login not found', async function(){
+    let newdata = {name:'Test',login:'test@test.com',
+                  password:'123456',permission:1};
+    let created = await dao.create(newdata); // create a new user
+
+    let badlogged = await dao.login("not the login","654321"); //should not find
+    expect(badlogged).toBeNull();
+});
