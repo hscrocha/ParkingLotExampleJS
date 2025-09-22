@@ -1,0 +1,1 @@
+In this folder we add static pages. A static page mean no coding besides normal JS, and no React.
