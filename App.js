@@ -1,7 +1,7 @@
-const express = require('express'); //import express
+const express = require('express'); //import express server
 const morgan = require('morgan'); //import morgan for logging
-const session = require('express-session');
-const cors = require('cors');
+const session = require('express-session'); // generic session handling for express
+const cors = require('cors'); // to avoid cors errors with react
 const memorystore = require('memorystore')(session);
 
 const app = express(); //creates a new Express Application
