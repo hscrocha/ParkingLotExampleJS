@@ -54,6 +54,6 @@ exports.loggedUser = function(req,res){
 }
 
 exports.logout = function(req, res){
-    req.session.user = null;
+    req.session.user = null; // user info no longer in session (logout)
     res.redirect('index.html');
 }

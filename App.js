@@ -26,6 +26,7 @@ const UserCont = require("./controller/UserController");
 app.post('/user',UserCont.postCreateOrUpdate); // register new user
 app.post('/loginuser',UserCont.login); // login user
 app.get('/loggeduser',UserCont.loggedUser); //fetches logged user (or null)
+app.get('/logout',UserCont.logout); 
 
 // Example Actions
 //app.get('/example', exCont.getAll);

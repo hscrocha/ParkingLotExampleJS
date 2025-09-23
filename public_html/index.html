@@ -123,6 +123,7 @@
             let response = await fetch('/loggedUser'); // calls App.js which call Controller
             let user = await response.json(); // converts response to JS
             if(user != null){
+                document.getElementById("menu-profile").style="display:inherit;";
                 document.getElementById("menu-logout").style="display:inherit;";
                 document.getElementById("menu-login").style="display:none;";
                 document.getElementById("menu-register").style="display:none;";
