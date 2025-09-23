@@ -23,16 +23,16 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index.html"><span class="bi-house-fill"></span> Home</a>
                 </li>
-                <li class="nav-item">
+                <li id="menu-vehicles" class="nav-item" style="display:none">
                     <a class="nav-link" href="#">My Vehicles</a>
                 </li>
-                <li class="nav-item">
+                <li id="menu-parking" class="nav-item" style="display:none">
                     <a class="nav-link" href="#">Parking</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Contact</a>
                 </li>
-                <li id="menu-admin" class="nav-item">
+                <li id="menu-admin" class="nav-item" style="display:none">
                     <a class="nav-link" href="admin.html">Admin</a>
                 </li>
                 </ul>
@@ -42,8 +42,8 @@
                     <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                         <li id="menu-login"><a class="dropdown-item" href="login.html">Login</a></li>
                         <li id="menu-register"><a class="dropdown-item" href="register.html">Register</a></li>
-                        <li id="menu-profile"><a class="dropdown-item" href="#">Profile</a></li>
-                        <li id="menu-logout"><a class="dropdown-item" href="logout">Logout</a></li>
+                        <li id="menu-profile" style="display:none"><a class="dropdown-item" href="#">Profile</a></li>
+                        <li id="menu-logout" style="display:none"><a class="dropdown-item" href="logout">Logout</a></li>
                     </ul>
                 </li>
                 </ul>
@@ -54,11 +54,10 @@
             <div class="row">
                 <div class="col-12 col-md-7">
                     <h2 class="text-primary">
-                        <img src="images/green_light.png" style="max-height:50px;" class="img-fluid" />
+                        <img id="green-light" src="images/green_light.png" style="max-height:50px;" class="img-fluid" />
                         Welcome to CS482 Parking Lot <span class="bi bi-truck-front-fill"></span>
                     </h2>
-                    <!-- <% if(logged==null ){ %> -->
-
+                    <div id="unlogged-welcome-text">
                     <p> We take pride on offering our parking services
                         through this webapp to make your parking more convenient.
                         All parking features are fully automated in this webapp,
@@ -77,8 +76,8 @@
                     <p> Please <a href="register.html">register</a> for free in our webapp, then you can access our main features.
                     A quickstart guide will be the first thing you see once you signed up.</p>
                     <p> Already registered? Then just <a href="login.html">log-in</a> and let's get your parking started.</p>
-
-                    <!-- <% } else { %>
+                    </div>
+                    <div id="logged-welcome-text" style="display:none">
                     <p> Thank you for sign-in for our parking services;
                         whether you are a new or existing customer, we value you
                         using our webapp for your parking needs.</p>
@@ -106,8 +105,7 @@
                         to pay at our Kiosks. Easy and convenient.</li>
                         <li><b>6. </b>Drive out of the lot and have a nice day!</li>
                     </ul>
-
-                    <% } %> -->
+                    </div>
 
                 </div>
                 <div class="col-8 col-md-5">
@@ -117,10 +115,28 @@
                 </div>
             </div>
         </div>
-
-
         <div class="mt-5 p-4 bg-dark text-white text-center">
             <p>Loyola University Maryland -- CS Department</p>
         </div>
+        <script>
+        async function checkLoggedUser(){ 
+            let response = await fetch('/loggedUser'); // calls App.js which call Controller
+            let user = await response.json(); // converts response to JS
+            if(user != null){
+                document.getElementById("menu-logout").style="display:inherit;";
+                document.getElementById("menu-login").style="display:none;";
+                document.getElementById("menu-register").style="display:none;";
+                document.getElementById("menu-vehicles").style="display:inherit;";
+                document.getElementById("menu-parking").style="display:inherit;";
+
+                document.getElementById("logged-welcome-text").style="display:inherit;";
+                document.getElementById("unlogged-welcome-text").style="display:none;";
+                
+                if(user.permission === 1)
+                    document.getElementById("menu-admin").style="display:inherit;";
+                }
+        }
+        checkLoggedUser();
+        </script>
     </body>
 </html>
