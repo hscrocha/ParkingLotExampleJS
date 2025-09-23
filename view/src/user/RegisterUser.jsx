@@ -4,12 +4,13 @@ export default function RegisterUser(){
     return (
 <div class="container mt-2">
     <h3 class="center text-primary"> Register New User </h3>
-    <form method="post" action="">
+    <form method="post" action="/user">
         <div class="row mb-2">
             <label class="col-form-label col-md-3 col-lg-1" for="txt_name"> Name: </label>
             <div class="col-12 col-md-6">
                 <input class="form-control" type="text" name="txt_name" id="txt_name" />
             </div>
+            {/* There is a bug on purpose here. I have name on the form but on the Controller & DAO */}
         </div>
         <div class="row mb-2">
             <label class="col-form-label col-md-3 col-lg-1" for="txt_login"> Login: </label>

@@ -18,10 +18,12 @@ app.use(session({
     saveUninitialized: true
 }));
 
-app.use(express.static('view/build'));// Static server use the folder 'public_html'
+//app.use(express.static('view/build'));// Static server for react components
 app.use(express.static('public_html'));// Static server use the folder 'public_html'
 
 // User Actions
+const UserCont = require("./controller/UserController");
+app.post('/user',UserCont.postCreateOrUpdate); // register new user
 
 // Example Actions
 //app.get('/example', exCont.getAll);

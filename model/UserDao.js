@@ -2,7 +2,6 @@
 const mongoose = require('mongoose');
 
 const userSchema = new mongoose.Schema({
-    name: String,
     login: { type:String, alias:'email', required:true },
     password: String,
     permission: Number,
@@ -39,7 +38,9 @@ exports.deleteAll = async function(){
 }
 
 exports.update = function(user){
-    //leave as homework
+    // homework
+    // https://mongoosejs.com/docs/api/query.html#Query.prototype.findOneAndUpdate()
+    // https://mongoosejs.com/docs/api/model.html#Model.findByIdAndUpdate() 
 }
 
 exports.login = async function(plogin, pwd){

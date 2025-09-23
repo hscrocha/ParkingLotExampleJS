@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!-- 
+    Author: Prof H Rocha
+    Example for Software Engineering class
+-->
+<html>
+    <head>
+        <title>CS482 Parking Lot Example</title>
+        
+        <!-- Boostrap Library (For pretier design of HTML components)-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <!-- Bootrap Icons for the Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">        
+    </head>
+    <body>
+        <div class="p-4 bg-primary text-white text-center"> <!-- Jumbotron -->
+          <h1>CS482 Parking Lot <span class="bi bi-truck-front-fill"></span>  Example</h1>
+        </div>
+        <nav class="navbar navbar-expand-sm bg-dark" data-bs-theme="dark"> 
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html"><span class="bi-house-fill"></span> Home</a>
+                </li>
+            </div>
+        </nav>
+        <br/>
+        <div class="container mt-2">
+    <h3 class="center text-primary"> Register New User </h3>
+    <form method="post" action="user">
+        <div class="row mb-2">
+            <label class="col-form-label col-md-3 col-lg-1" for="txt_name"> Name: </label>
+            <!-- BUG: This form has Name (not in my DB) to show that Web page Form is not the same as DB Entity  -->
+            <div class="col-12 col-md-6">
+                <input class="form-control" type="text" name="txt_name" id="txt_name" />
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label class="col-form-label col-md-3 col-lg-1" for="txt_login"> Login: </label>
+            <div class="col-12 col-md-6">
+                <input class="form-control" type="email" name="txt_login" id="txt_login" required/>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label class="col-form-label col-md-3 col-lg-1" for="txt_pass"> Password: </label>
+            <div class="col-12 col-md-6">
+                <input class="form-control" type="password" name="txt_pass" id="txt_pass" autocomplete="off"
+                       minlength="6" required/>
+            </div>
+        </div>
+        <div class="row mb-2">
+            <label class="col-form-label col-md-3 col-lg-1" for="txt_conf"> Confirm Password: </label>
+            <div class="col-12 col-md-6">
+                <input class="form-control" type="password" name="txt_conf" id="txt_conf" autocomplete="off"
+                       minlength="6" required/>
+            </div>
+        </div>
+        <!-- Notice there is no permission. Normal Users shaw not choose their permission. -->
+
+        <div class="row mb-2">
+            <div class="offset-md-1 col-12 col-md-2 d-grid">
+                <button type="submit" onclick="return checkRegisterForm()" class="btn btn-success me-2"> Register</button>
+            </div>
+            <div class="col-12 col-md-2 d-grid">
+                <button type="reset" class="btn btn-warning me-2" id="clear_button"> Clear</button>
+            </div>
+            <div class="col-12 col-md-2 d-grid">
+                <a type="button" class="btn btn-danger me-2" href="index.html"> Cancel</a>
+            </div>
+        </div>
+    </form>
+</div>
+
+
+<br/><br/>
+
+
+        <div class="mt-5 p-4 bg-dark text-white text-center">
+            <p>Loyola University Maryland -- CS Department</p>
+        </div>
+        <script type="text/javascript"> 
+            //Javascript functions are great for quick form checks before sending data to the Servlet
+            function checkRegisterForm(){
+                let pass = document.getElementById("txt_pass").value;
+                let conf = document.getElementById("txt_conf").value;
+                if(pass === conf){
+                    //Typed text in Password and Confirm Password are the same
+                    return true;
+                } else {
+                    //Typed text in Password and Confirm Password do not match.
+                    window.alert("Passwords do not match."); //Just an example, it is better to give more detail message for users
+                    return false;
+                }
+            }
+        </script>
+    </body>
+</html>

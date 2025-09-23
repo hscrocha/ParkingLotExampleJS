@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<!-- 
+    Author: Prof H Rocha
+    Example for Software Engineering class
+-->
+<html>
+    <head>
+        <title>CS482 Parking Lot Example</title>
+        
+        <!-- Boostrap Library (For pretier design of HTML components)-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <!-- Bootrap Icons for the Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">        
+    </head>
+    <body>
+        <div class="p-4 bg-primary text-white text-center"> <!-- Jumbotron -->
+          <h1>CS482 Parking Lot <span class="bi bi-truck-front-fill"></span>  Example</h1>
+        </div>
+        <nav class="navbar navbar-expand-sm bg-dark" data-bs-theme="dark"> 
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="index.html"><span class="bi-house-fill"></span> Home</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">My Vehicles</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Parking</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li id="menu-admin" class="nav-item">
+                    <a class="nav-link" href="admin.html">Admin</a>
+                </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><span class="bi-person-circle"></span> Account</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li id="menu-login"><a class="dropdown-item" href="login.html">Login</a></li>
+                        <li id="menu-register"><a class="dropdown-item" href="register.html">Register</a></li>
+                        <li id="menu-profile"><a class="dropdown-item" href="#">Profile</a></li>
+                        <li id="menu-logout"><a class="dropdown-item" href="logout">Logout</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </div>
+        </nav>
+        <br/>
+        <div class="container">
+            <div class="row">
+                <div class="col-12 col-md-7">
+                    <h2 class="text-primary">
+                        <img src="images/green_light.png" style="max-height:50px;" class="img-fluid" />
+                        Welcome to CS482 Parking Lot <span class="bi bi-truck-front-fill"></span>
+                    </h2>
+                    <!-- <% if(logged==null ){ %> -->
+
+                    <p> We take pride on offering our parking services
+                        through this webapp to make your parking more convenient.
+                        All parking features are fully automated in this webapp,
+                    or make our regular services more quick and easy just for you.</p>
+                    <hr/>
+                    <h3 class="text-primary"> Why use this App? </h3>
+                    <p> Here is a quick list of reasons why our webapp for parking services are great </p>
+                    <ul>
+                        <li><span class="bi bi-clock-fill"></span> <strong>Save Time:</strong> Our smart technology allows you to find and reserve a parking spot in real-time. No more driving in circles!</li>
+                        <li><span class="bi bi-coin"></span> <strong>Save Money:</strong> You will only pay for the time your car was actually in the lot. No more paying for unused hours!</li>
+                        <li><span class="bi bi-activity"></span> <strong>Save Patience:</strong> You can do everything in the app except for parking your car (our technology is not there yet). No more lines to pay your parking or to ask someone for help!</li>
+                        <li><span class="bi bi-film"></span> <strong>Save Ferris:</strong> Oops, that was from a movie... still a good save.</li>
+                    </ul>
+                    <hr/>
+                    <h3 class="text-primary"> Where do I start? </h3>
+                    <p> Please <a href="register.html">register</a> for free in our webapp, then you can access our main features.
+                    A quickstart guide will be the first thing you see once you signed up.</p>
+                    <p> Already registered? Then just <a href="login.html">log-in</a> and let's get your parking started.</p>
+
+                    <!-- <% } else { %>
+                    <p> Thank you for sign-in for our parking services;
+                        whether you are a new or existing customer, we value you
+                        using our webapp for your parking needs.</p>
+                    <p>
+                        We take pride on offering great services
+                        through this webapp to make your parking more convenient.</p>
+                    <hr/>
+                    <h3 class="text-primary"> Quickstart Guide </h3>
+                    <ul>
+                        <li><b>1. </b> Login, congratz you completed this already!</li>
+                        <li><b>2. </b> Click on <a href="#">My Vehicles</a> on top to add/update your
+                            vehicle information. This will help us provide the best
+                            possible parking spot that can confortable fit your vehicle.
+                            You can have multiple vehicles saved for quick check-in and reservations.
+                        </li>
+                        <li><b>3. </b> Click on <a href="#">Parking</a> on top to select your parking spot.
+                        You will be able to check which spots are available and reserve it in advance.
+                        </li>
+                        <li><b>4. </b>Drive and Park. Unfortunately, this step our webapp cannot automate for you.
+                            But the app can guide you to your reserved spot, so that you do not need to drive around
+                            looking for an empty one.
+                        </li>
+                        <li><b>5. </b>Checkout whenever you want to leave, just select your active parking on
+                            the <a href="#">Parking menu</a> and select checkout. You can pay using the webapp or generate a QR code
+                        to pay at our Kiosks. Easy and convenient.</li>
+                        <li><b>6. </b>Drive out of the lot and have a nice day!</li>
+                    </ul>
+
+                    <% } %> -->
+
+                </div>
+                <div class="col-8 col-md-5">
+                    <img src="images/parkinglot.jpg" class="img-fluid" />
+                    <br/><br/><br/>
+                    <img src="images/parkinglot2.jpg" class="img-fluid" />
+                </div>
+            </div>
+        </div>
+
+
+        <div class="mt-5 p-4 bg-dark text-white text-center">
+            <p>Loyola University Maryland -- CS Department</p>
+        </div>
+    </body>
+</html>
