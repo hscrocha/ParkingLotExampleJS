@@ -49,7 +49,10 @@ exports.login = async function(req, res){
 
 exports.loggedUser = function(req,res){
     res.status(200); // 200 = Ok
-    res.send( req.session.user ); //send the logged user
+    if(req.session.user) // if there is a logged user
+        res.send( req.session.user ); //send the logged user
+    else //otherwise send null
+        res.json(null); //need to use res.json() because send(null) sends nothing
     res.end(); 
 }
 
@@ -57,3 +60,10 @@ exports.logout = function(req, res){
     req.session.user = null; // user info no longer in session (logout)
     res.redirect('index.html');
 }
+
+exports.adminCheck = function(req){ //Use inside controllers to check permissions
+    return (req.session.user && req.session.user.permission == 1);
+    // true if admin (user not null/undefined and permission = 1)
+}
+
+

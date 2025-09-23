@@ -100,3 +100,21 @@ test('Logout User',async function(){
     expect(req.session.user).toBeNull(); 
     expect(res.redirect).toHaveBeenCalledWith('index.html');
 });
+
+test('Admin Security Check passess',function(){
+    let req = { session: { user: {_id:'a1',permission:1 } }};
+    let pass = controller.adminCheck(req);
+    expect(pass).toBeTruthy();
+});
+
+test('Admin Security Check fail',function(){
+    let req = { session: { user: {_id:'c1',permission:2 } }};
+    let pass = controller.adminCheck(req);
+    expect(pass).toBeFalsy();
+});
+
+test('Admin Security Check unlogged user',function(){
+    let req = {session: {user: undefined }};
+    let pass = controller.adminCheck(req);
+    expect(pass).toBeFalsy();
+});
