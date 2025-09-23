@@ -43,7 +43,8 @@ exports.update = function(user){
     // https://mongoosejs.com/docs/api/model.html#Model.findByIdAndUpdate() 
 }
 
-exports.login = async function(plogin, pwd){
-    let user = await userModel.findOne({login:plogin, password:pwd});
+exports.findLogin = async function(plogin){
+    //Since the passwords are hashed, they needed to checked on the controller
+    let user = await userModel.findOne({login:plogin});
     return user;
 }

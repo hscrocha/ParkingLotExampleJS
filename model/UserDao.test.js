@@ -56,12 +56,12 @@ test('Read All', async function(){
     expect(lstUsers[0].login).toBe("test1@test.com"); // 1st user login is test1 
 });
 
-test('Login user', async function(){
+test('Find Login user', async function(){
     let newdata = {name:'Test',login:'test@test.com',
                   password:'123456',permission:1};
     let created = await dao.create(newdata); // create a new user
 
-    let logged = await dao.login(newdata.login, newdata.password);
+    let logged = await dao.findLogin(newdata.login);
 
     expect(logged).not.toBeNull();
     expect(logged._id).toEqual(created._id);
@@ -73,6 +73,6 @@ test('Login not found', async function(){
                   password:'123456',permission:1};
     let created = await dao.create(newdata); // create a new user
 
-    let badlogged = await dao.login("not the login","654321"); //should not find
+    let badlogged = await dao.findLogin("not the login","654321"); //should not find
     expect(badlogged).toBeNull();
 });
