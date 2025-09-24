@@ -1,14 +1,39 @@
 const dao = require('../model/UserDao');
 const passUtil = require('../util/PasswordUtil');
 
+exports.getAll = async function(req, res){
+    if( exports.adminCheck(req) === true ){ //security check
+        //User are sensitive info, not necessary to check admin for every data
+        res.status(200); // 200 = Ok
+        res.send(await dao.readAll()); //send all users back to the client
+        res.end();
+    }else{  // Not admin, should not be able to see all users
+        res.status(403); //forbidden
+        res.end();
+    } 
+}
+
+exports.deleteOne = function(req,res){
+    //URL parameter always on req.params.<name>
+    let id = req.params.id; //get param with id (different than body)    
+    
+    if(exports.adminCheck(req)){ //extra layer of security using session, not always necessary   
+        dao.del(id);
+        res.redirect('../admin/cruduser.html');
+    } else {
+        res.status(403);
+        res.end();
+    }
+}
+
 exports.postCreateOrUpdate = function(req,res){
     let newuser = {}; //empty obj
     newuser.login = req.body.txt_login;
     newuser.password = passUtil.hashPassword(req.body.txt_pass);
-    if(req.body.txt_perm){ // if permission data was sent
+    if(exports.adminCheck(req)===true && req.body.txt_perm){ 
+        // if Admin and permission data was sent
         newuser.permission = parseInt(req.body.txt_perm); //we fetch permission
-        // For security this is incomplete, we still need to check if current logged user has permission
-    } else {
+    } else { //Otherwise can only be common user permission
         newuser.permission = 2;
     }
 
@@ -16,13 +41,17 @@ exports.postCreateOrUpdate = function(req,res){
         //update user
         newuser._id = req.body.txt_id;
         console.log('Update user');
-        dao.update(newuser);
+        dao.update(newuser); //be careful to not override the password
     }
     else{
         //insert user
         dao.create(newuser);        
     }
-    res.redirect('index.html');
+
+    if(exports.adminCheck(req)===true) //if admin, redirect to crudusers
+        res.redirect("admin/cruduser.html");
+    else //regular user send to index
+        res.redirect('index.html');
 }
 
 exports.login = async function(req, res){

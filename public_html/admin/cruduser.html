@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<!-- 
+    Author: Prof H Rocha
+    Example for Software Engineering class
+-->
+<html>
+    <head>
+        <title>CS482 Parking Lot Example</title>
+        
+        <!-- Boostrap Library (For pretier design of HTML components)-->
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <!-- Bootrap Icons for the Icons -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css">        
+
+        <script>
+        async function checkLoggedUser(){ 
+            let response = await fetch('../loggedUser'); // calls App.js which call Controller
+            let user = await response.json(); // converts response to JS
+            
+            if(user===null || user.permission != 1){ //checks admin permission
+                window.location.replace("../login.html"); //sends to login if not admin
+            } else {
+                document.getElementById("menu-profile").style="display:inherit;";
+                document.getElementById("menu-logout").style="display:inherit;";
+                document.getElementById("menu-login").style="display:none;";
+                document.getElementById("menu-register").style="display:none;";
+                document.getElementById("menu-vehicles").style="display:inherit;";
+                document.getElementById("menu-parking").style="display:inherit;";
+                document.getElementById("menu-admin").style="display:inherit;";
+
+                document.getElementById("access-granted-panel").style="display:inherit;";
+                document.getElementById("access-denied-panel").style="display:none;";
+            }
+        }
+        checkLoggedUser();
+        </script>
+    </head>
+    <body>
+        <div class="p-4 bg-primary text-white text-center"> <!-- Jumbotron -->
+          <h1>CS482 Parking Lot <span class="bi bi-truck-front-fill"></span>  Example</h1>
+        </div>
+        <nav class="navbar navbar-expand-sm bg-dark" data-bs-theme="dark"> 
+            <div class="container-fluid">
+                <ul class="navbar-nav">
+                <li class="nav-item">
+                    <a class="nav-link" href="../index.html"><span class="bi-house-fill"></span> Home</a>
+                </li>
+                <li id="menu-vehicles" class="nav-item" style="display:none">
+                    <a class="nav-link" href="#">My Vehicles</a>
+                </li>
+                <li id="menu-parking" class="nav-item" style="display:none">
+                    <a class="nav-link" href="#">Parking</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Contact</a>
+                </li>
+                <li id="menu-admin" class="nav-item">
+                    <a class="nav-link" href="../admin.html">Admin</a>
+                </li>
+                </ul>
+                <ul class="navbar-nav ms-auto">
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown"><span class="bi-person-circle"></span> Account</a>
+                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                        <li id="menu-login"><a class="dropdown-item" href="../login.html">Login</a></li>
+                        <li id="menu-register"><a class="dropdown-item" href="../register.html">Register</a></li>
+                        <li id="menu-profile" style="display:none"><a class="dropdown-item" href="#">Profile</a></li>
+                        <li id="menu-logout" style="display:none"><a class="dropdown-item" href="../logout">Logout</a></li>
+                    </ul>
+                </li>
+                </ul>
+            </div>
+        </nav>
+        <br/>
+
+<div class="container mt-5">
+    <div class="row">
+      <div class="col-12 col-md-4">
+        <h1> Manage Users </h1>
+      </div>
+      <div class="col">
+        <a href="#MainForm" onclick='insertForm();' class="btn btn-primary pe-2 ps-2" data-bs-toggle="modal" data-bs-target="#ModalForm"> 
+          <span class="bi-plus-square-fill"></span> 
+          New User 
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <div class="container">
+    <div id="rest"> 
+    </div>
+  </div>
+  
+  <!-- The Modal -->
+  <div class="modal" id="ModalForm">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title" id="ModalTitle">User Form</h4>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        
+        <form class="was-validated" method="post" action="/user">
+          <!-- Modal body -->
+          <div class="modal-body">
+            <div class="container" id="MainForm">
+              
+              <div class="row mb-2" id="div_form_id" style="display:flex;">
+                <label class="col-form-label col-md-3" for="txt_id"> ID: </label>
+                <div class="col-12 col-md">
+                  <input class="form-control" type="text" name="txt_id" id="txt_id" autocomplete="off" readonly />
+                </div>
+              </div> 
+              <div class="row mb-2">
+                <label class="col-form-label col-md-3" for="txt_name"> Name: </label>
+                <div class="col-12 col-md">
+                  <input class="form-control" type="text" name="txt_name" id="txt_name" required />
+                </div>
+              </div>
+              <div class="row mb-2">
+                <label class="col-form-label col-md-3" for="txt_login"> Login: </label>
+                <div class="col-12 col-md">
+                  <input class="form-control" type="email" name="txt_login" id="txt_login" required />
+                </div>
+              </div>
+              <div class="row mb-2">
+                <label class="col-form-label col-md-3" for="txt_pass"> Password: </label>
+                <div class="col-12 col-md">
+                  <input class="form-control" type="password" name="txt_pass" id="txt_pass" minlength="6" required />
+                </div>
+              </div>
+              <div class="row mb-2">
+                <label class="col-form-label col-md-3" for="txt_perm"> Permission: </label>
+                <div class="col-12 col-md">
+                  <select class="form-select" name="txt_perm" id="txt_perm">
+                    <option value="2">Normal</option>
+                    <option value="1">Admin</option>
+                  </select>
+                </div>
+              </div>
+            </div>  
+          </div>
+          
+          <!-- Modal footer -->
+          <div class="modal-footer">
+            <button type="submit" class="btn btn-success me-2"> Save </button>
+            <button type="reset" class="btn btn-warning me-2" id="clear_button"> Clear </button>
+            <button type="button" class="btn btn-danger me-2" data-bs-dismiss="modal">Cancel</button>
+          </div>
+        </form>
+        
+      </div>
+    </div>
+  </div>
+
+        <!-- Footer -->
+        <div class="mt-5 p-4 bg-dark text-white text-center">
+            <p>Loyola University Maryland -- CS Department</p>
+        </div>
+<script>
+    function conf(){
+      return window.confirm('Are you sure you want to delete?');
+    }
+
+    let users = [{_id:0, name:'test'}];
+
+    /*** main function to ask the server for user data
+        and display it in this web page.
+        */
+    async function getUsers(){ 
+      let response = await fetch('../user');
+
+      users = await response.json();
+      
+      let out = `
+      <table class="table table-striped table-hover">
+        <thead>
+          <tr>
+            <th> </th>
+            <th> ID </th>
+            <th> Login </th>
+            <th> Permission </th>
+            <th> Created </th>
+          </tr>
+        </thead>
+        <tbody>`;
+          for(let i=0; i<users.length; i++){
+            out += `
+            <tr>
+              <td> <a href="../deluser/${users[i]._id}" onclick="return conf();"><span class="text-danger bi-x-circle-fill"></span></a>  &nbsp; 
+                <a href="#MainForm" onclick="editForm(${i})" data-bs-toggle="modal" data-bs-target="#ModalForm"> <span class="bi-pencil-square text-info"></span></a>  </td>
+              <td> ${users[i]._id} </td>
+              <td> ${users[i].login} </td>
+              <td> ${users[i].permission===1?'Admin':'Normal'} </td>
+              <td> ${new Date(users[i].creation).toLocaleString()} </td>
+            </tr>`;
+          }
+          out+= `</tbody>
+        </table>`;
+        
+        document.getElementById('rest').innerHTML = out;
+      }
+      
+      getUsers();
+
+    function insertForm(){
+       document.getElementById("ModalTitle").innerHTML = 'Create New User';
+       document.getElementById("div_form_id").style = 'display:none;';
+       document.getElementById("txt_id").value = '';
+       document.getElementById("txt_name").value = '';
+       document.getElementById("txt_login").value = '';
+       document.getElementById("txt_pass").value = '';
+       document.getElementById("txt_perm").value = '2';
+       document.getElementById("clear_button").style = 'display:flex;';
+    }
+    function editForm(pos){
+       document.getElementById("ModalTitle").innerHTML = 'Edit User';
+       document.getElementById("div_form_id").style = 'display:flex;';
+       document.getElementById("txt_id").value = users[pos]._id;
+       document.getElementById("txt_name").value = users[pos].name;
+       document.getElementById("txt_login").value = users[pos].login;
+       document.getElementById("txt_pass").value = '';
+       document.getElementById("txt_perm").value = users[pos].permission;
+
+       document.getElementById("clear_button").style = 'display:none;';       
+    }
+    </script>
+    </body>
+</html>

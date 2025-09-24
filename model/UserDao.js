@@ -38,7 +38,7 @@ exports.deleteAll = async function(){
 }
 
 exports.update = function(user){
-    // homework
+    // homework: //be careful to not override the hashed password with an unhashed one
     // https://mongoosejs.com/docs/api/query.html#Query.prototype.findOneAndUpdate()
     // https://mongoosejs.com/docs/api/model.html#Model.findByIdAndUpdate() 
 }

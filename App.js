@@ -24,9 +24,11 @@ app.use(express.static('public_html'));// Static server use the folder 'public_h
 // User Actions
 const UserCont = require("./controller/UserController");
 app.post('/user',UserCont.postCreateOrUpdate); // register new user
+app.get('/user',UserCont.getAll);
 app.post('/loginuser',UserCont.login); // login user
 app.get('/loggeduser',UserCont.loggedUser); //fetches logged user (or null)
 app.get('/logout',UserCont.logout); 
+app.get('/deluser/:id',UserCont.deleteOne); //deletes user 
 
 // Example Actions
 //app.get('/example', exCont.getAll);
