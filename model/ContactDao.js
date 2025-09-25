@@ -23,7 +23,11 @@ exports.readAll = async function(){
     // Later try: find().sort({name:'asc'}).skip(0).limit(5);
     return lstContacts;
 }
-exports.readOne = function(){}
+exports.readOne = async function(id){
+    let contact = await contactModel.findById(id);
+    return contact;
+}
+
 exports.update = function(){}
 exports.deleteOne = function(){}
 
