@@ -51,7 +51,7 @@ npm run coverage
 ```
 
 To configure tests in your own repository you need to:
-- Install Jest as a module in your Node Express: `npm install jest` on the root folder of your application.
+- Install Jest as a module in your Node Express: `npm install --save-dev jest` on the root folder of your application.
 
 # React
 
