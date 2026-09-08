@@ -16,10 +16,18 @@
   "jest": {
     "testPathIgnorePatterns": [
       "<rootDir>/view/"
+    ],
+    "collectCoverageFrom": [
+      "<rootDir>/model/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/controller/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/routes/**/*.{js,jsx,ts,tsx}",
+      "!**/node_modules/**",
+      "!<rootDir>/Server.js"
     ]
   },
   "scripts": {
     "test": "jest",
-    "coverage":"jest --coverage"
+    "coverage":"jest --coverage",
+    "test:app": "jest App.test.js"
   }
 }
