@@ -5,7 +5,7 @@ const path = require('path');
 describe('Architectural Design Enforcement', () => {
   it('should delegate all route handlers to external controllers (no inline logic)', () => {
     // 1. Read your raw app.js file directly from disk
-    const appFilePath = path.join(__dirname, './App.js'); // Adjust path to app.js if needed
+    const appFilePath = path.join(__dirname, './app.js'); // Adjust path to app.js if needed
     const appCode = fs.readFileSync(appFilePath, 'utf8');
 
     // 2. Regular Expressions to find Express route patterns
