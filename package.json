@@ -29,6 +29,6 @@
   "scripts": {
     "test": "jest",
     "coverage": "jest --coverage",
-    "test:app": "jest App.test.js"
+    "test:app": "jest app.test.js"
   }
 }
