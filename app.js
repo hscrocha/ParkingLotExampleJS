@@ -34,9 +34,6 @@ app.get('/logout',UserCont.logout);
 app.get('/deluser/:id',UserCont.deleteOne); //deletes user 
 
 // Contact Actions
-const ContactCont = require("./controller/ContactController");
-app.get('/contact', ContactCont.getAllContacts);
-app.post('/newcontact', ContactCont.createNewContact);
 
 
 // Example Actions
