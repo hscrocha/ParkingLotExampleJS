@@ -17,13 +17,15 @@ exports.create = async function(contactdata){
     await newContact.save();
     return newContact;
 }
-exports.read = function(){}
+exports.read = function(id){}
+
 exports.readAll = async function(){
     let lstContacts = await contactModel.find();
     return lstContacts;
 }
 exports.update = function(){}
 exports.del = function(){}
+
 // SHOULD ONLY BE USED FOR TESTING 
 exports.deleteAll = async function(){
     await contactModel.deleteMany({});

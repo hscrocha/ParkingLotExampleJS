@@ -7,7 +7,17 @@ exports.postCreate = async function(req, res){
     newcontact.subject = req.body.txt_subject;
     newcontact.message = req.body.txt_message;
 
-    await dao.create(newcontact);
+    let contact = await dao.create(newcontact);
+    if(contact._id){
+        res.redirect('/index.html');
+    } else {
+        res.status(400);
+    }
+}
 
-    res.redirect('/index.html');
+exports.getAll = async function(req, res){
+    let lstContacts = await dao.readAll();
+    res.status(200);
+    res.send(lstContacts);
+    res.end();
 }
