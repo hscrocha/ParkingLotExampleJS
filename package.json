@@ -21,6 +21,7 @@
     "collectCoverageFrom": [
       "<rootDir>/model/**/*.{js,jsx,ts,tsx}",
       "<rootDir>/controller/**/*.{js,jsx,ts,tsx}",
+      "<rootDir>/util/**/*.{js,jsx,ts,tsx}",
       "<rootDir>/routes/**/*.{js,jsx,ts,tsx}",
       "!**/node_modules/**",
       "!<rootDir>/Server.js"
