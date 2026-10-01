@@ -1,0 +1,710 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>CS482 Parking Lot | Smart Parking</title>
+
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous" />
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+
+        <style>
+            :root {
+                --brand-primary: #0d6efd;
+                --brand-primary-dark: #0b4fb3;
+                --brand-accent: #19b76a;
+                --brand-deep: #0f172a;
+                --brand-soft: #f3f7ff;
+                --brand-surface: #ffffff;
+                --brand-border: rgba(15, 23, 42, 0.08);
+                --brand-muted: #56708f;
+                --brand-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+            }
+
+            * {
+                box-sizing: border-box;
+            }
+
+            body {
+                background: linear-gradient(180deg, #f4f8ff 0%, #eef5ff 42%, #f8fafc 100%);
+                color: var(--brand-deep);
+                font-family: Arial, Helvetica, sans-serif;
+            }
+
+            a {
+                text-decoration: none;
+            }
+
+            .topbar {
+                background: rgba(15, 23, 42, 0.96);
+                backdrop-filter: blur(8px);
+                box-shadow: 0 10px 25px rgba(15, 23, 42, 0.12);
+            }
+
+            .brand-mark {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 2.2rem;
+                height: 2.2rem;
+                border-radius: 0.8rem;
+                background: linear-gradient(135deg, #52a6ff, #0d6efd);
+                color: white;
+                box-shadow: var(--brand-shadow);
+            }
+
+            .navbar .nav-link {
+                color: rgba(255, 255, 255, 0.82);
+                font-weight: 600;
+                padding: 0.8rem 0.9rem;
+                transition: 0.2s ease;
+            }
+
+            .navbar .nav-link:hover,
+            .navbar .nav-link:focus {
+                color: white;
+            }
+
+            .hero {
+                position: relative;
+                overflow: hidden;
+                padding: 5rem 0 4rem;
+            }
+
+            .hero::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: radial-gradient(circle at top left, rgba(13, 110, 253, 0.12), transparent 30%),
+                            radial-gradient(circle at bottom right, rgba(25, 183, 106, 0.12), transparent 25%);
+                pointer-events: none;
+            }
+
+            .hero-content {
+                position: relative;
+                z-index: 1;
+            }
+
+            .eyebrow {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.55rem;
+                background: rgba(13, 110, 253, 0.08);
+                color: var(--brand-primary-dark);
+                border: 1px solid rgba(13, 110, 253, 0.12);
+                border-radius: 999px;
+                padding: 0.5rem 0.9rem;
+                font-size: 0.8rem;
+                font-weight: 700;
+                letter-spacing: 0.04rem;
+                text-transform: uppercase;
+            }
+
+            .hero h1 {
+                font-size: clamp(2.4rem, 4vw, 4.6rem);
+                line-height: 1.08;
+                letter-spacing: -0.04em;
+                font-weight: 800;
+                margin: 1.2rem 0 1rem;
+            }
+
+            .hero h1 .highlight {
+                color: var(--brand-primary);
+            }
+
+            .hero p {
+                font-size: 1.08rem;
+                color: var(--brand-muted);
+                max-width: 620px;
+                line-height: 1.8;
+            }
+
+            .cta-row {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 0.9rem;
+                margin-top: 1.8rem;
+            }
+
+            .btn-primary-custom {
+                background: linear-gradient(135deg, var(--brand-primary), #3a8dff);
+                border: none;
+                color: white;
+                padding: 0.9rem 1.5rem;
+                border-radius: 0.9rem;
+                font-weight: 700;
+                box-shadow: 0 16px 30px rgba(13, 110, 253, 0.2);
+            }
+
+            .btn-secondary-custom {
+                background: white;
+                border: 1px solid var(--brand-border);
+                color: var(--brand-deep);
+                padding: 0.9rem 1.5rem;
+                border-radius: 0.9rem;
+                font-weight: 700;
+            }
+
+            .trust-row {
+                margin-top: 2.1rem;
+                display: flex;
+                flex-wrap: wrap;
+                gap: 1.25rem;
+                align-items: center;
+                color: var(--brand-muted);
+                font-weight: 600;
+            }
+
+            .stat-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 0.55rem;
+                color: var(--brand-deep);
+                background: rgba(255, 255, 255, 0.8);
+                border: 1px solid var(--brand-border);
+                border-radius: 999px;
+                padding: 0.7rem 1rem;
+                font-size: 0.9rem;
+                box-shadow: 0 12px 20px rgba(15, 23, 42, 0.04);
+            }
+
+            .dashboard-card {
+                background: rgba(255, 255, 255, 0.9);
+                border: 1px solid var(--brand-border);
+                border-radius: 1.6rem;
+                box-shadow: var(--brand-shadow);
+                padding: 1.3rem;
+                position: relative;
+                z-index: 1;
+                backdrop-filter: blur(10px);
+            }
+
+            .parking-panel {
+                background: linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%);
+                border-radius: 1.3rem;
+                border: 1px solid var(--brand-border);
+                padding: 1rem;
+            }
+
+            .lot-grid {
+                display: grid;
+                grid-template-columns: repeat(4, minmax(0, 1fr));
+                gap: 0.7rem;
+                margin-top: 1rem;
+            }
+
+            .lot-slot {
+                border-radius: 0.85rem;
+                padding: 0.7rem 0.5rem;
+                text-align: center;
+                font-weight: 700;
+                font-size: 0.8rem;
+                border: 1px solid transparent;
+            }
+
+            .slot-free {
+                background: rgba(25, 183, 106, 0.12);
+                color: #0f8a4c;
+                border-color: rgba(25, 183, 106, 0.16);
+            }
+
+            .slot-occupied {
+                background: rgba(8, 47, 91, 0.06);
+                color: #395a7f;
+                border-color: rgba(8, 47, 91, 0.12);
+            }
+
+            .slot-preferred {
+                background: rgba(13, 110, 253, 0.1);
+                color: var(--brand-primary-dark);
+                border-color: rgba(13, 110, 253, 0.16);
+            }
+
+            .mini-summary {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 0.8rem;
+                margin-top: 1rem;
+            }
+
+            .summary-box {
+                background: white;
+                border-radius: 1rem;
+                border: 1px solid var(--brand-border);
+                padding: 0.9rem 0.8rem;
+            }
+
+            .summary-box .value {
+                display: block;
+                font-size: 1.5rem;
+                font-weight: 800;
+                letter-spacing: -0.04em;
+            }
+
+            .summary-box .label {
+                font-size: 0.78rem;
+                color: var(--brand-muted);
+                font-weight: 700;
+                text-transform: uppercase;
+                letter-spacing: 0.04em;
+            }
+
+            .section {
+                padding: 2rem 0 4rem;
+            }
+
+            .section-title {
+                font-size: clamp(2rem, 3vw, 2.8rem);
+                font-weight: 800;
+                letter-spacing: -0.04em;
+                margin-bottom: 0.8rem;
+            }
+
+            .section-subtitle {
+                max-width: 680px;
+                color: var(--brand-muted);
+                font-size: 1.05rem;
+                line-height: 1.8;
+            }
+
+            .feature-card {
+                background: rgba(255, 255, 255, 0.9);
+                border: 1px solid var(--brand-border);
+                border-radius: 1.35rem;
+                box-shadow: 0 14px 30px rgba(15, 23, 42, 0.04);
+                height: 100%;
+                padding: 1.5rem;
+            }
+
+            .feature-icon {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 3.2rem;
+                height: 3.2rem;
+                border-radius: 1rem;
+                background: rgba(13, 110, 253, 0.1);
+                color: var(--brand-primary);
+                font-size: 1.6rem;
+            }
+
+            .feature-card h3 {
+                margin-top: 1rem;
+                font-size: 1.4rem;
+                font-weight: 800;
+            }
+
+            .feature-card p {
+                margin: 0.7rem 0 0;
+                color: var(--brand-muted);
+                line-height: 1.8;
+            }
+
+            .steps {
+                background: linear-gradient(180deg, rgba(13, 110, 253, 0.04), rgba(25, 183, 106, 0.04));
+                border-radius: 2rem;
+                padding: 2rem;
+                border: 1px solid var(--brand-border);
+            }
+
+            .step-item {
+                display: flex;
+                gap: 1rem;
+                align-items: flex-start;
+                margin-bottom: 1.3rem;
+            }
+
+            .step-number {
+                flex-shrink: 0;
+                width: 2.5rem;
+                height: 2.5rem;
+                border-radius: 0.8rem;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-weight: 800;
+                background: linear-gradient(135deg, var(--brand-primary), #6fa6ff);
+                color: white;
+                box-shadow: 0 12px 24px rgba(13, 110, 253, 0.2);
+            }
+
+            .step-item h4 {
+                margin: 0;
+                font-size: 1.2rem;
+                font-weight: 800;
+            }
+
+            .step-item p {
+                margin: 0.4rem 0 0;
+                color: var(--brand-muted);
+                line-height: 1.8;
+            }
+
+            .benefit-panel {
+                background: linear-gradient(135deg, #0f172a, #142d4c 60%, #0d6efd 180%);
+                color: white;
+                border-radius: 2rem;
+                box-shadow: var(--brand-shadow);
+                padding: 2rem;
+            }
+
+            .benefit-list {
+                list-style: none;
+                padding: 0;
+                margin: 1.5rem 0 0;
+                display: grid;
+                gap: 1rem;
+            }
+
+            .benefit-list li {
+                display: flex;
+                gap: 0.8rem;
+                align-items: flex-start;
+                color: rgba(255, 255, 255, 0.9);
+                line-height: 1.7;
+            }
+
+            .benefit-list i {
+                color: #7cdeaa;
+                font-size: 1.2rem;
+                margin-top: 0.2rem;
+            }
+
+            .cta-banner {
+                background: linear-gradient(135deg, rgba(13, 110, 253, 0.08), rgba(25, 183, 106, 0.08));
+                border: 1px solid var(--brand-border);
+                border-radius: 1.5rem;
+                padding: 1.6rem 1.8rem;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 1rem;
+                flex-wrap: wrap;
+            }
+
+            .cta-banner h3 {
+                margin: 0;
+                font-weight: 800;
+                letter-spacing: -0.03em;
+            }
+
+            footer {
+                background: #0f172a;
+                color: rgba(255, 255, 255, 0.8);
+                padding: 1.75rem 0;
+                margin-top: 2rem;
+            }
+
+            .footer-brand {
+                font-weight: 800;
+                color: white;
+            }
+
+            @media (max-width: 991.98px) {
+                .hero {
+                    padding-top: 4rem;
+                }
+
+                .dashboard-card {
+                    margin-top: 2rem;
+                }
+            }
+
+            @media (max-width: 767.98px) {
+                .lot-grid {
+                    grid-template-columns: repeat(2, minmax(0, 1fr));
+                }
+
+                .mini-summary {
+                    grid-template-columns: 1fr;
+                }
+
+                .cta-banner {
+                    align-items: flex-start;
+                }
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-expand-sm topbar" data-bs-theme="dark">
+            <div class="container">
+                <a class="navbar-brand d-flex align-items-center gap-2 text-white fw-bold" href="index.html">
+                    <span class="brand-mark"><i class="bi bi-truck-front-fill"></i></span>
+                    CS482 Parking
+                </a>
+
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav" aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+
+                <div class="collapse navbar-collapse" id="mainNav">
+                    <ul class="navbar-nav me-auto mb-2 mb-sm-0">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="index.html"><i class="bi bi-house-fill"></i> Home</a>
+                        </li>
+                        <li id="menu-vehicles" class="nav-item" style="display:none">
+                            <a class="nav-link" href="#">My Vehicles</a>
+                        </li>
+                        <li id="menu-parking" class="nav-item" style="display:none">
+                            <a class="nav-link" href="#">Parking</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#">Contact</a>
+                        </li>
+                        <li id="menu-admin" class="nav-item" style="display:none">
+                            <a class="nav-link" href="admin.html">Admin</a>
+                        </li>
+                    </ul>
+
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                <i class="bi bi-person-circle"></i> Account
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li id="menu-login"><a class="dropdown-item" href="login.html">Login</a></li>
+                                <li id="menu-register"><a class="dropdown-item" href="register.html">Register</a></li>
+                                <li id="menu-profile" style="display:none"><a class="dropdown-item" href="#">Profile</a></li>
+                                <li id="menu-logout" style="display:none"><a class="dropdown-item" href="logout">Logout</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <main>
+            <section class="hero">
+                <div class="container hero-content">
+                    <div class="row align-items-center g-5">
+                        <div class="col-lg-7">
+                            <div class="eyebrow">
+                                <i class="bi bi-lightning-charge-fill"></i>
+                                Smart parking made simple
+                            </div>
+
+                            <h1>
+                                Reserve your spot,
+                                <span class="highlight">park with confidence.</span>
+                            </h1>
+
+                            <div id="unlogged-welcome-text">
+                                <p>
+                                    We help drivers find available parking faster, book in advance, and pay seamlessly from one clean, simple experience.
+                                </p>
+                            </div>
+
+                            <div id="logged-welcome-text" style="display:none">
+                                <p>
+                                    Thank you for being part of our parking network. Your parking experience is ready for a smoother check-in, smarter reservations, and faster checkout.
+                                </p>
+                            </div>
+
+                            <div class="cta-row">
+                                <a href="register.html" class="btn btn-primary-custom">Get Started</a>
+                                <a href="login.html" class="btn btn-secondary-custom">Log In</a>
+                            </div>
+
+                            <div class="trust-row">
+                                <span class="stat-pill"><i class="bi bi-clock-history"></i> 2 min average check-in</span>
+                                <span class="stat-pill"><i class="bi bi-geo-alt-fill"></i> Live lot availability</span>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-5">
+                            <div class="dashboard-card">
+                                <div class="d-flex justify-content-between align-items-center mb-3">
+                                    <div>
+                                        <small class="text-uppercase text-muted fw-bold">Lot status</small>
+                                        <h4 class="mb-0 mt-1">North Garage</h4>
+                                    </div>
+                                    <span class="badge rounded-pill bg-success-subtle text-success px-3 py-2">
+                                        <i class="bi bi-circle-fill me-1" style="font-size: 0.6rem;"></i>
+                                        Open
+                                    </span>
+                                </div>
+
+                                <div class="parking-panel">
+                                    <div class="d-flex justify-content-between align-items-center mb-2">
+                                        <span class="fw-bold">Available spots</span>
+                                        <span class="text-success fw-bold">18 / 42</span>
+                                    </div>
+
+                                    <div class="lot-grid">
+                                        <div class="lot-slot slot-free">A1</div>
+                                        <div class="lot-slot slot-preferred">A2</div>
+                                        <div class="lot-slot slot-free">A3</div>
+                                        <div class="lot-slot slot-occupied">A4</div>
+                                        <div class="lot-slot slot-free">B1</div>
+                                        <div class="lot-slot slot-occupied">B2</div>
+                                        <div class="lot-slot slot-free">B3</div>
+                                        <div class="lot-slot slot-preferred">B4</div>
+                                        <div class="lot-slot slot-free">C1</div>
+                                        <div class="lot-slot slot-free">C2</div>
+                                        <div class="lot-slot slot-occupied">C3</div>
+                                        <div class="lot-slot slot-free">C4</div>
+                                        <div class="lot-slot slot-occupied">D1</div>
+                                        <div class="lot-slot slot-free">D2</div>
+                                        <div class="lot-slot slot-preferred">D3</div>
+                                        <div class="lot-slot slot-free">D4</div>
+                                    </div>
+                                </div>
+
+                                <div class="mini-summary">
+                                    <div class="summary-box">
+                                        <span class="label">Today</span>
+                                        <span class="value text-primary">94%</span>
+                                    </div>
+                                    <div class="summary-box">
+                                        <span class="label">Wait time</span>
+                                        <span class="value text-success">4 min</span>
+                                    </div>
+                                    <div class="summary-box">
+                                        <span class="label">Revenue</span>
+                                        <span class="value text-dark">$1.2k</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <div class="text-center mx-auto" style="max-width: 760px;">
+                        <div class="eyebrow justify-content-center">Why drivers choose us</div>
+                        <h2 class="section-title">Parking that fits your day.</h2>
+                        <p class="section-subtitle mx-auto">Everything you need to check in, reserve, and pay is designed to be smoother, faster, and easier to manage.</p>
+                    </div>
+
+                    <div class="row g-4 mt-3">
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="bi bi-clock-fill"></i></div>
+                                <h3>Save time</h3>
+                                <p>See open spaces in real time and reserve ahead so you can skip the loops and head straight to your spot.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="bi bi-coin"></i></div>
+                                <h3>Save money</h3>
+                                <p>Only pay for the time you use, with straightforward digital checkout and no long lines at the kiosk.</p>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="feature-card">
+                                <div class="feature-icon"><i class="bi bi-activity"></i></div>
+                                <h3>Stay in control</h3>
+                                <p>Manage your vehicles, track parking sessions, and keep your account information organized in one place.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <div class="container">
+                    <div class="row g-5 align-items-center">
+                        <div class="col-lg-6">
+                            <div class="steps">
+                                <div class="eyebrow">How it works</div>
+                                <h2 class="section-title mt-3">A simple flow from arrival to checkout.</h2>
+
+                                <div class="step-item">
+                                    <div class="step-number">1</div>
+                                    <div>
+                                        <h4>Create an account</h4>
+                                        <p>Register once and save your vehicle details so check-in feels instant every time you visit.</p>
+                                    </div>
+                                </div>
+
+                                <div class="step-item">
+                                    <div class="step-number">2</div>
+                                    <div>
+                                        <h4>Select your parking</h4>
+                                        <p>Choose from available spots and reserve the best option for your vehicle and schedule.</p>
+                                    </div>
+                                </div>
+
+                                <div class="step-item">
+                                    <div class="step-number">3</div>
+                                    <div>
+                                        <h4>Park and pay</h4>
+                                        <p>Drive in, use your reservation, and settle your balance in app when you are ready to leave.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <div class="benefit-panel">
+                                <div class="eyebrow bg-white text-primary border-0">Built for convenience</div>
+                                <h2 class="section-title mt-3 mb-0 text-white">A smooth experience for every visit.</h2>
+
+                                <ul class="benefit-list">
+                                    <li><i class="bi bi-check-circle-fill"></i><span>Quick vehicle management with saved profiles for multiple cars.</span></li>
+                                    <li><i class="bi bi-check-circle-fill"></i><span>Clear parking selection with availability and pricing updates in real time.</span></li>
+                                    <li><i class="bi bi-check-circle-fill"></i><span>Smart, user-friendly checkout designed to reduce friction at the exit gate.</span></li>
+                                    <li><i class="bi bi-check-circle-fill"></i><span>Clean account access for customers and administrators in the same easy interface.</span></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section pt-0">
+                <div class="container">
+                    <div class="cta-banner">
+                        <div>
+                            <h3>Ready to make parking easier for your customers?</h3>
+                        </div>
+                        <div class="cta-row mt-0">
+                            <a href="register.html" class="btn btn-primary-custom">Create Account</a>
+                            <a href="login.html" class="btn btn-secondary-custom">Sign In</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <footer>
+            <div class="container d-flex justify-content-between align-items-center flex-wrap gap-2">
+                <div class="footer-brand">Loyola University Maryland — CS Department</div>
+                <div>Smart parking for a better campus experience</div>
+            </div>
+        </footer>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js" integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI" crossorigin="anonymous"></script>
+        <script>
+            async function checkLoggedUser() {
+                try {
+                    let response = await fetch('/loggedUser');
+                    let user = await response.json();
+
+                    if (user != null) {
+                        document.getElementById("menu-profile").style.display = "inherit";
+                        document.getElementById("menu-logout").style.display = "inherit";
+                        document.getElementById("menu-login").style.display = "none";
+                        document.getElementById("menu-register").style.display = "none";
+                        document.getElementById("menu-vehicles").style.display = "inherit";
+                        document.getElementById("menu-parking").style.display = "inherit";
+
+                        document.getElementById("logged-welcome-text").style.display = "inherit";
+                        document.getElementById("unlogged-welcome-text").style.display = "none";
+
+                        if (user.permission === 1) {
+                            document.getElementById("menu-admin").style.display = "inherit";
+                        }
+                    }
+                } catch (error) {
+                    // Ignore if the endpoint is unavailable on a static preview.
+                }
+            }
+
+            checkLoggedUser();
+        </script>
+    </body>
+</html>

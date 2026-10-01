@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f6f1" />
+    <title>CS482 Parking Lot | A better way to park</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css" />
+    <script>document.documentElement.classList.add('motion-ready');</script>
+    <style>
+        :root {
+            color-scheme: light;
+            --ink: #172522;
+            --muted: #5d6b65;
+            --paper: #f5f6f1;
+            --white: #fff;
+            --line: #d9ded6;
+            --green: #c7f36a;
+            --green-dark: #315323;
+            --orange: #f1a36b;
+            --nav: #172522;
+            --content: 1160px;
+        }
+
+        * { box-sizing: border-box; }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            margin: 0;
+            background: var(--paper);
+            color: var(--ink);
+            font-family: "DM Sans", sans-serif;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        a { color: inherit; }
+
+        button, a { -webkit-tap-highlight-color: transparent; }
+
+        :focus-visible {
+            outline: 3px solid #6b9d35;
+            outline-offset: 4px;
+        }
+
+        .wrap {
+            width: min(var(--content), calc(100% - 48px));
+            margin-inline: auto;
+        }
+
+        .topbar {
+            position: relative;
+            z-index: 2;
+            background: var(--nav);
+            color: #f5f6f1;
+        }
+
+        .nav-inner {
+            min-height: 76px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+        }
+
+        .brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            color: inherit;
+            text-decoration: none;
+            flex: 0 0 auto;
+        }
+
+        .brand-symbol {
+            width: 38px;
+            height: 38px;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(199, 243, 106, .5);
+            color: var(--green);
+            font-size: 19px;
+        }
+
+        .brand-name {
+            display: grid;
+            gap: 1px;
+            font-family: Manrope, sans-serif;
+            font-size: 14px;
+            font-weight: 800;
+            line-height: 1.15;
+        }
+
+        .brand-name small {
+            color: #a5b2aa;
+            font-family: "DM Sans", sans-serif;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .nav-links, .nav-account {
+            display: flex;
+            align-items: center;
+            gap: 27px;
+        }
+
+        .nav-links a, .nav-account a {
+            color: #d6ded8;
+            font-size: 13px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: color 160ms ease;
+        }
+
+        .nav-links a:hover, .nav-account a:hover { color: var(--green); }
+
+        .nav-account { gap: 18px; }
+
+        .nav-account .nav-cta {
+            padding: 11px 16px;
+            background: var(--green);
+            color: var(--ink);
+        }
+
+        .menu-toggle {
+            display: none;
+            width: 42px;
+            height: 42px;
+            border: 1px solid rgba(255,255,255,.28);
+            background: transparent;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .hero {
+            position: relative;
+            overflow: hidden;
+            padding: 75px 0 78px;
+            background-color: var(--paper);
+            background-image: linear-gradient(rgba(23,37,34,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(23,37,34,.035) 1px, transparent 1px);
+            background-size: 36px 36px;
+            border-bottom: 1px solid var(--line);
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: minmax(0, .9fr) minmax(400px, 1.1fr);
+            align-items: center;
+            gap: 62px;
+        }
+
+        .eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            color: var(--green-dark);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .eyebrow-mark {
+            width: 8px;
+            height: 8px;
+            background: #77aa38;
+            border-radius: 50%;
+        }
+
+        h1, h2, h3, p { margin-top: 0; }
+
+        h1, h2, h3 { font-family: Manrope, sans-serif; }
+
+        .hero h1 {
+            max-width: 540px;
+            margin: 22px 0 20px;
+            font-size: 64px;
+            font-weight: 800;
+            line-height: 1.02;
+        }
+
+        .hero h1 span {
+            color: #668c39;
+            display: block;
+        }
+
+        .hero-copy {
+            max-width: 470px;
+            margin-bottom: 28px;
+            color: var(--muted);
+            font-size: 16px;
+            line-height: 1.75;
+        }
+
+        .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; }
+
+        .button {
+            min-height: 48px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 11px;
+            padding: 0 18px;
+            border: 1px solid var(--ink);
+            background: var(--ink);
+            color: white;
+            font-size: 13px;
+            font-weight: 700;
+            text-decoration: none;
+            transition: transform 160ms ease, background 160ms ease;
+        }
+
+        .button:hover { transform: translateY(-2px); background: #2a3d37; }
+
+        .button-light {
+            background: transparent;
+            color: var(--ink);
+        }
+
+        .button-light:hover { background: white; color: var(--ink); }
+
+        .fine-print {
+            margin: 16px 0 0;
+            color: var(--muted);
+            font-size: 12px;
+        }
+
+        .lot-visual {
+            position: relative;
+            min-height: 416px;
+            padding: 24px;
+            overflow: hidden;
+            background: #dce6d0;
+            border: 1px solid #cbd5bf;
+        }
+
+        .lot-visual::before, .lot-visual::after {
+            content: "";
+            position: absolute;
+            background: rgba(255,255,255,.63);
+        }
+
+        .lot-visual::before { width: 1px; inset: 0 auto 0 50%; }
+        .lot-visual::after { height: 1px; inset: 50% 0 auto; }
+
+        .lot-topline, .lot-bottomline {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+        }
+
+        .lot-label {
+            font-size: 10px;
+            font-weight: 700;
+            letter-spacing: .08em;
+            text-transform: uppercase;
+        }
+
+        .lot-tag {
+            padding: 7px 9px;
+            background: rgba(255,255,255,.78);
+            color: #526447;
+            font-size: 10px;
+            font-weight: 700;
+        }
+
+        .parking-layout {
+            position: absolute;
+            inset: 75px 52px 74px;
+            display: grid;
+            grid-template-columns: 1fr 76px 1fr;
+            align-items: stretch;
+            gap: 14px;
+        }
+
+        .parking-row {
+            display: grid;
+            grid-template-rows: repeat(3, 1fr);
+            gap: 10px;
+        }
+
+        .spot {
+            position: relative;
+            display: grid;
+            place-items: center;
+            border: 1px solid rgba(23,37,34,.24);
+            background: rgba(255,255,255,.22);
+            color: #59704d;
+            font-size: 11px;
+            font-weight: 700;
+        }
+
+        .spot::after {
+            content: "";
+            position: absolute;
+            inset: 8px 14px;
+            border: 1px dashed rgba(23,37,34,.19);
+        }
+
+        .spot.available { background: rgba(199,243,106,.77); color: #315323; }
+
+        .spot.occupied { background: #687871; color: white; }
+
+        .spot.occupied::after { border-color: rgba(255,255,255,.25); }
+
+        .spot-car {
+            position: relative;
+            z-index: 1;
+            font-size: 20px;
+        }
+
+        .drive-lane {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-inline: 1px dashed rgba(23,37,34,.29);
+            color: rgba(23,37,34,.49);
+            font-size: 20px;
+        }
+
+        .lane-route {
+            position: absolute;
+            width: 3px;
+            height: 64%;
+            background: #709945;
+            animation: route-pulse 2.4s ease-in-out infinite;
+        }
+
+        .lane-route::before, .lane-route::after {
+            content: "";
+            position: absolute;
+            left: -4px;
+            width: 11px;
+            height: 11px;
+            border: 2px solid #709945;
+            background: #dce6d0;
+            border-radius: 50%;
+        }
+
+        .lane-route::before { top: -5px; }
+        .lane-route::after { bottom: -5px; background: var(--green); }
+
+        .lot-bottomline { position: absolute; inset: auto 24px 20px; }
+
+        .legend {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #526447;
+            font-size: 10px;
+            font-weight: 600;
+        }
+
+        .legend span { display: inline-flex; align-items: center; gap: 5px; }
+
+        .legend i { width: 8px; height: 8px; background: var(--green); }
+
+        .legend .occupied-key { background: #687871; }
+
+        .section { padding: 73px 0; }
+
+        .benefits {
+            display: grid;
+            grid-template-columns: 1.05fr repeat(3, 1fr);
+            border-top: 1px solid var(--line);
+            border-bottom: 1px solid var(--line);
+        }
+
+        .benefit-intro, .benefit {
+            min-height: 148px;
+            padding: 25px 24px;
+        }
+
+        .benefit-intro { padding-left: 0; }
+
+        .benefit + .benefit, .benefit-intro + .benefit { border-left: 1px solid var(--line); }
+
+        .benefit-intro h2 {
+            max-width: 220px;
+            margin-bottom: 0;
+            font-size: 23px;
+            line-height: 1.2;
+        }
+
+        .benefit-icon {
+            display: block;
+            margin-bottom: 17px;
+            color: #698f3d;
+            font-size: 21px;
+        }
+
+        .benefit h3 { margin-bottom: 7px; font-size: 15px; }
+
+        .benefit p {
+            max-width: 220px;
+            margin-bottom: 0;
+            color: var(--muted);
+            font-size: 12px;
+            line-height: 1.65;
+        }
+
+        .steps-heading {
+            display: flex;
+            align-items: end;
+            justify-content: space-between;
+            gap: 24px;
+            margin-bottom: 34px;
+        }
+
+        .steps-heading h2 {
+            max-width: 460px;
+            margin-bottom: 0;
+            font-size: 34px;
+            line-height: 1.16;
+        }
+
+        .steps-heading p {
+            max-width: 340px;
+            margin-bottom: 2px;
+            color: var(--muted);
+            font-size: 13px;
+            line-height: 1.7;
+        }
+
+        .steps {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            border-top: 1px solid var(--line);
+        }
+
+        .step { padding: 22px 24px 0 0; }
+
+        .step + .step { padding-left: 24px; border-left: 1px solid var(--line); }
+
+        .step-number {
+            display: block;
+            margin-bottom: 22px;
+            color: #77994d;
+            font-family: Manrope, sans-serif;
+            font-size: 13px;
+            font-weight: 800;
+        }
+
+        .step h3 { margin-bottom: 8px; font-size: 18px; }
+
+        .step p { max-width: 285px; margin-bottom: 0; color: var(--muted); font-size: 13px; line-height: 1.7; }
+
+        .member-welcome { display: none; }
+
+        .member-welcome h2 { margin-bottom: 14px; font-size: 34px; }
+
+        .member-welcome > p { color: var(--muted); line-height: 1.7; }
+
+        .member-links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 23px; }
+
+        .member-welcome .step-number { margin-bottom: 10px; }
+
+        .site-footer {
+            padding: 27px 0;
+            background: var(--nav);
+            color: #d6ded8;
+        }
+
+        .footer-inner { display: flex; align-items: center; justify-content: space-between; gap: 20px; }
+
+        .footer-inner p { margin: 0; font-size: 12px; }
+
+        .footer-note { color: #a5b2aa; }
+
+        .motion-ready .enter {
+            opacity: 0;
+            transform: translateY(18px);
+            transition: opacity 650ms ease, transform 650ms cubic-bezier(.2,.7,.2,1);
+        }
+
+        .motion-ready .enter.is-visible { opacity: 1; transform: translateY(0); }
+
+        .delay-1 { transition-delay: 100ms !important; }
+        .delay-2 { transition-delay: 190ms !important; }
+        .delay-3 { transition-delay: 280ms !important; }
+
+        @keyframes route-pulse {
+            0%, 100% { opacity: .56; transform: scaleY(.9); }
+            50% { opacity: 1; transform: scaleY(1); }
+        }
+
+        @media (max-width: 900px) {
+            .hero-grid { grid-template-columns: minmax(0, .9fr) minmax(340px, 1.1fr); gap: 34px; }
+            .lot-visual { min-height: 365px; padding: 18px; }
+            .parking-layout { inset: 70px 34px 70px; grid-template-columns: 1fr 56px 1fr; gap: 9px; }
+            .benefits { grid-template-columns: repeat(3, 1fr); }
+            .benefit-intro { grid-column: 1 / -1; min-height: auto; padding: 0 0 20px; }
+            .benefit-intro h2 { max-width: none; }
+            .benefit:first-of-type { border-left: 0; padding-left: 0; }
+        }
+
+        @media (max-width: 700px) {
+            .wrap { width: min(var(--content), calc(100% - 36px)); }
+            .nav-inner { min-height: 68px; flex-wrap: wrap; gap: 0; }
+            .menu-toggle { display: grid; place-items: center; }
+            .nav-content { display: none; flex: 0 0 100%; padding: 3px 0 17px; }
+            .nav-inner.is-open .nav-content { display: grid; gap: 13px; }
+            .nav-links, .nav-account { align-items: stretch; flex-direction: column; gap: 0; }
+            .nav-links a, .nav-account a { display: block; padding: 10px 0; }
+            .nav-account .nav-cta { width: fit-content; padding: 11px 16px; }
+            .hero { padding: 55px 0 48px; }
+            .hero-grid { grid-template-columns: 1fr; gap: 37px; }
+            .hero h1 { max-width: 500px; font-size: 49px; }
+            .hero-copy { font-size: 15px; }
+            .lot-visual { min-height: 355px; }
+            .section { padding: 52px 0; }
+            .benefits { grid-template-columns: 1fr; }
+            .benefit-intro { grid-column: auto; }
+            .benefit, .benefit + .benefit, .benefit-intro + .benefit {
+                min-height: auto;
+                padding: 19px 0;
+                border-left: 0;
+                border-top: 1px solid var(--line);
+            }
+            .benefit-icon { margin-bottom: 10px; }
+            .steps-heading { align-items: start; flex-direction: column; gap: 13px; }
+            .steps-heading h2, .member-welcome h2 { font-size: 29px; }
+            .steps { grid-template-columns: 1fr; }
+            .step, .step + .step { padding: 20px 0; border-left: 0; border-bottom: 1px solid var(--line); }
+            .step-number { margin-bottom: 12px; }
+            .footer-inner { align-items: start; flex-direction: column; gap: 8px; }
+        }
+
+        @media (max-width: 380px) {
+            .hero h1 { font-size: 42px; }
+            .lot-visual { min-height: 315px; padding: 15px; }
+            .parking-layout { inset: 63px 24px 65px; grid-template-columns: 1fr 42px 1fr; gap: 7px; }
+            .lot-bottomline { inset-inline: 15px; }
+            .legend { gap: 8px; font-size: 9px; }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                animation-duration: .01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: .01ms !important;
+            }
+
+            .motion-ready .enter { opacity: 1; transform: none; }
+        }
+    </style>
+</head>
+<body>
+    <header class="topbar">
+        <div class="wrap nav-inner" id="site-navigation">
+            <a class="brand" href="newindex.html" aria-label="CS482 Parking Lot home">
+                <span class="brand-symbol" aria-hidden="true"><i class="bi bi-p-square-fill"></i></span>
+                <span class="brand-name">CS482 Parking Lot<small>LOYOLA UNIVERSITY MARYLAND</small></span>
+            </a>
+            <button class="menu-toggle" type="button" aria-label="Open navigation" aria-expanded="false" aria-controls="nav-content">
+                <i class="bi bi-list" aria-hidden="true"></i>
+            </button>
+            <div class="nav-content" id="nav-content">
+                <nav class="nav-links" aria-label="Main navigation">
+                    <a href="newindex.html" aria-current="page">Home</a>
+                    <a id="menu-vehicles" href="#" hidden>My Vehicles</a>
+                    <a id="menu-parking" href="#" hidden>Parking</a>
+                    <a href="contact.html">Contact</a>
+                    <a id="menu-admin" href="admin.html" hidden>Admin</a>
+                </nav>
+                <nav class="nav-account" aria-label="Account">
+                    <a id="menu-login" href="login.html">Log in</a>
+                    <a id="menu-register" class="nav-cta" href="register.html">Create account <i class="bi bi-arrow-up-right" aria-hidden="true"></i></a>
+                    <a id="menu-profile" href="#" hidden>Profile</a>
+                    <a id="menu-logout" href="/logout" hidden>Log out</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="wrap hero-grid">
+                <div class="hero-copy-block">
+                    <div class="eyebrow enter"><span class="eyebrow-mark" aria-hidden="true"></span> A little less circling. A lot more arriving.</div>
+                    <h1 class="enter delay-1">Parking, <span>without the search.</span></h1>
+                    <p class="hero-copy enter delay-2">Find a spot, plan your visit, and take the guesswork out of getting where you need to go. Your parking starts here.</p>
+                    <div class="actions enter delay-3" id="guest-actions">
+                        <a class="button" href="register.html">Get started <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                        <a class="button button-light" href="login.html">I have an account</a>
+                    </div>
+                    <p class="fine-print enter delay-3" id="guest-note">Free to join. Ready when you are.</p>
+                    <div class="member-welcome" id="member-welcome" aria-live="polite">
+                        <span class="step-number">WELCOME BACK</span>
+                        <h2>Your next stop, made simple.</h2>
+                        <p>Manage your vehicles, find parking, and pick up right where you left off.</p>
+                        <div class="member-links">
+                            <a class="button" href="#">Go to parking <i class="bi bi-arrow-right" aria-hidden="true"></i></a>
+                            <a class="button button-light" href="#">My vehicles</a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lot-visual enter delay-2" role="img" aria-label="Illustrative overhead parking layout showing open and occupied parking spaces along a central drive lane">
+                    <div class="lot-topline">
+                        <span class="lot-label">A clearer way to park</span>
+                        <span class="lot-tag">PARKING, AT A GLANCE</span>
+                    </div>
+                    <div class="parking-layout" aria-hidden="true">
+                        <div class="parking-row">
+                            <div class="spot available">A01</div>
+                            <div class="spot occupied"><i class="bi bi-car-front-fill spot-car"></i></div>
+                            <div class="spot available">A03</div>
+                        </div>
+                        <div class="drive-lane"><span class="lane-route"></span><i class="bi bi-arrow-up" aria-hidden="true"></i></div>
+                        <div class="parking-row">
+                            <div class="spot occupied"><i class="bi bi-car-front-fill spot-car"></i></div>
+                            <div class="spot available">B02</div>
+                            <div class="spot occupied"><i class="bi bi-car-front-fill spot-car"></i></div>
+                        </div>
+                    </div>
+                    <div class="lot-bottomline">
+                        <span class="lot-label">Illustrative layout</span>
+                        <span class="legend"><span><i></i> Open</span><span><i class="occupied-key"></i> Occupied</span></span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="benefits-title">
+            <div class="wrap benefits">
+                <div class="benefit-intro enter">
+                    <span class="eyebrow">A better parking day</span>
+                    <h2 id="benefits-title">Less hassle from arrival to exit.</h2>
+                </div>
+                <article class="benefit enter delay-1">
+                    <i class="bi bi-clock benefit-icon" aria-hidden="true"></i>
+                    <h3>Spend time well</h3>
+                    <p>Plan ahead and spend less time searching for a place to park.</p>
+                </article>
+                <article class="benefit enter delay-2">
+                    <i class="bi bi-receipt benefit-icon" aria-hidden="true"></i>
+                    <h3>Pay for your stay</h3>
+                    <p>Checkout is based on the time your vehicle is in the lot.</p>
+                </article>
+                <article class="benefit enter delay-3">
+                    <i class="bi bi-phone benefit-icon" aria-hidden="true"></i>
+                    <h3>Handle it online</h3>
+                    <p>Keep the useful parts of your parking visit in one place.</p>
+                </article>
+            </div>
+        </section>
+
+        <section class="section" aria-labelledby="steps-title" id="how-it-works">
+            <div class="wrap" id="guest-steps">
+                <div class="steps-heading enter">
+                    <h2 id="steps-title">From sign-up to park, in a few steps.</h2>
+                    <p>Create an account to save your vehicle details and make your next visit easier.</p>
+                </div>
+                <div class="steps">
+                    <article class="step enter">
+                        <span class="step-number">01 / GET READY</span>
+                        <h3>Add your vehicle</h3>
+                        <p>Save one or more vehicles so your parking details are ready when you need them.</p>
+                    </article>
+                    <article class="step enter delay-1">
+                        <span class="step-number">02 / FIND A SPOT</span>
+                        <h3>Choose parking</h3>
+                        <p>Check available spaces and reserve a spot for your visit.</p>
+                    </article>
+                    <article class="step enter delay-2">
+                        <span class="step-number">03 / HEAD OUT</span>
+                        <h3>Park and go</h3>
+                        <p>Follow your reservation, then check out online when it is time to leave.</p>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap footer-inner">
+            <p>CS482 Parking Lot <span class="footer-note">· Loyola University Maryland CS Department</span></p>
+            <p class="footer-note">A class project for a smoother parking visit.</p>
+        </div>
+    </footer>
+
+    <script>
+        const navigation = document.getElementById('site-navigation');
+        const menuToggle = document.querySelector('.menu-toggle');
+
+        menuToggle.addEventListener('click', () => {
+            const isOpen = navigation.classList.toggle('is-open');
+            menuToggle.setAttribute('aria-expanded', String(isOpen));
+            menuToggle.setAttribute('aria-label', isOpen ? 'Close navigation' : 'Open navigation');
+            menuToggle.innerHTML = `<i class="bi ${isOpen ? 'bi-x' : 'bi-list'}" aria-hidden="true"></i>`;
+        });
+
+        async function checkLoggedUser() {
+            try {
+                const response = await fetch('/loggedUser');
+                if (!response.ok) return;
+                const user = await response.json();
+                if (!user) return;
+
+                document.getElementById('menu-profile').hidden = false;
+                document.getElementById('menu-logout').hidden = false;
+                document.getElementById('menu-login').hidden = true;
+                document.getElementById('menu-register').hidden = true;
+                document.getElementById('menu-vehicles').hidden = false;
+                document.getElementById('menu-parking').hidden = false;
+                document.getElementById('guest-actions').hidden = true;
+                document.getElementById('guest-note').hidden = true;
+                document.getElementById('guest-steps').hidden = true;
+                document.getElementById('member-welcome').style.display = 'block';
+
+                if (user.permission === 1) {
+                    document.getElementById('menu-admin').hidden = false;
+                }
+            } catch (error) {
+                console.info('Signed-out landing page shown.');
+            }
+        }
+
+        if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+            const revealObserver = new IntersectionObserver((entries, observer) => {
+                entries.forEach((entry) => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.12 });
+
+            document.querySelectorAll('.enter').forEach((element) => revealObserver.observe(element));
+        } else {
+            document.querySelectorAll('.enter').forEach((element) => element.classList.add('is-visible'));
+        }
+
+        checkLoggedUser();
+    </script>
+</body>
+</html>
